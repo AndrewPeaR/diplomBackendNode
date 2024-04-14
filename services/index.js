@@ -3,15 +3,19 @@ const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
-async function get(){
+async function get(req){
+    // console.log(req)
+    const professionEmployees = req.body.profession
+    const levelEmployees = req.body.level
+    // const portfolioEmployees = req.body.Portfolio
     const employees = await prisma.employees.findMany({
         where: {
-            firstname: { contains: 'maksim' }
-            // include: {
-            //     employeesPortfolio: {
-            //         title: { contains: 'mobileprog' }
-            //     }
-            // }
+            employeesLevel:{
+                level: levelEmployees
+            },
+            employeesProfession: {
+                profession: professionEmployees
+            }
         },
         include: {
             employeesLevel: {
@@ -31,9 +35,6 @@ async function get(){
             }
         }
     })
-    // employees.then(result => {
-    //     return result
-    // })
     return employees
 }
 
