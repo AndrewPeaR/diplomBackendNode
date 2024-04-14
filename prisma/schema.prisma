@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  passwordHash   String
+  isActivated    Boolean?  @default(false)
+  activationLink String
+  firstname      String
+  lastname       String
+  imageUrl       String?
+  dateOfBirth    DateTime?
+  company        Company?
+}
+
+model Company {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  imageUrl         String?
+  address          String?
+  created_at       DateTime?
+  companyPortfolio CompanyPortfolio[]
+  employees        Employees[]
+  managerId        Int                @unique
+  manager          User               @relation(fields: [managerId], references: [id])
+}
+
+model CompanyPortfolio {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  imageUrl    String?
+  companyId   Int
+  company     Company @relation(fields: [companyId], references: [id])
+}
+
+model Employees {
+  id          Int       @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  description String?
+  contacts    String?
+  dateOfBirth DateTime?
+  imageUrl    String?
+  grade       Int?
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  employeesPortfolio   EmployeesPortfolio? @relation(fields: [employeesPortfolioId], references: [id])
+  employeesPortfolioId Int?
+
+  employeesProfession   EmployeesProfession? @relation(fields: [employeesProfessionId], references: [id])
+  employeesProfessionId Int?
+
+  employeesLevel   EmployeesLevel? @relation(fields: [employeesLevelId], references: [id])
+  employeesLevelId Int?
+}
+
+model EmployeesPortfolio {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String?
+  imageUrl    String?
+  employees   Employees[]
+}
+
+model EmployeesProfession {
+  id         Int         @id @unique
+  profession String
+  employees  Employees[]
+}
+
+model EmployeesLevel {
+  id        Int         @id @default(autoincrement())
+  level     String
+  employees Employees[]
+}
