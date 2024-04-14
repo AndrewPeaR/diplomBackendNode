@@ -6,15 +6,16 @@ class EmployeesService {
   async getAllEmployees(req, res) {
     const professionEmployees = req.body.profession;
     const levelEmployees = req.body.level;
+    // console.log(professionEmployees, " ", levelEmployees)
     const employees = await prisma.employees.findMany({
-      // where: {
-      //   employeesLevel: {
-      //     level: levelEmployees,
-      //   },
-      //   employeesProfession: {
-      //     profession: professionEmployees,
-      //   },
-      // },
+      where: {
+        employeesLevel: {
+          id: levelEmployees,
+        },
+        employeesProfession: {
+          id: professionEmployees,
+        },
+      },
       include: {
         employeesLevel: {
           select: {

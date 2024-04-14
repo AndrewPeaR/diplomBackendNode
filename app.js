@@ -4,7 +4,8 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const router = require('./routes/index.js')
+const router = require('./routes/routes.js')
+const errorMiddleware = require('./middlewares/errorMiddleware.js')
 
 const PORT = process.env.PORT || 3001
 const app = new express()
@@ -17,6 +18,7 @@ app.use(cors({
 }))
 
 app.use('/api/v1', router)
+app.use(errorMiddleware)
 
 app.listen(PORT, () => {
     console.log(`>>> Server started on: ${PORT}`)

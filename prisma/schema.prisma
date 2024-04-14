@@ -13,12 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tokens {
+  id           Int    @id @default(autoincrement())
+  userId       Int    @unique
+  refreshToken String @unique
+}
+
 model User {
   id             Int       @id @default(autoincrement())
   email          String    @unique
   passwordHash   String
   isActivated    Boolean?  @default(false)
-  activationLink String
+  activationLink String    @unique
   firstname      String
   lastname       String
   imageUrl       String?
