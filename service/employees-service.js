@@ -3,18 +3,10 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 class EmployeesService {
-  async getAllEmployees(req, res) {
-    const professionEmployees = req.body.profession;
-    const levelEmployees = req.body.level;
-    // console.log(professionEmployees, " ", levelEmployees)
+  async getOneCompanyEmployees(companyId) {
     const employees = await prisma.employees.findMany({
       where: {
-        employeesLevel: {
-          id: levelEmployees,
-        },
-        employeesProfession: {
-          id: professionEmployees,
-        },
+        companyId: Number(companyId),
       },
       include: {
         employeesLevel: {
@@ -34,21 +26,51 @@ class EmployeesService {
         },
       },
     });
-    res.json(employees)
+    return employees
   }
 
-  async createEmployees(req, res){
+  async addEmployeesToCompany(employeerInfo){
     const newEmployeer = await prisma.employees.create({ 
       data: {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        companyId: parseInt(req.body.companyId),
-        employeesProfessionId: parseInt(req.body.employeesProfessionId),
-        employeesLevelId: parseInt(req.body.employeesLevelId)
+        firstname: employeerInfo.firstname,
+        lastname: employeerInfo.lastname,
+        description: employeerInfo.description,
+        contacts: employeerInfo.contacts,
+        dateOfBirth: new Date(employeerInfo.dateOfBirth),
+        imageUrl: employeerInfo.imageUrl,
+        isFree: employeerInfo.isFree,
+        companyId: parseInt(employeerInfo.companyId),
+        employeesProfessionId: parseInt(employeerInfo.employeesProfessionId),
+        employeesLevelId: parseInt(employeerInfo.employeesLevelId)
       }
     })
+    return newEmployeer
+  }
 
-    res.json(newEmployeer)
+  async updateEmployeer(employeerInfo){
+    const updatedEmployeer = await prisma.employees.update({
+      where: {
+        id: Number(employeerInfo.id)
+      },
+      data: {
+        firstname: employeerInfo.firstname,
+        lastname: employeerInfo.lastname,
+        description: employeerInfo.description,
+        contacts: employeerInfo.contacts,
+        dateOfBirth: new Date(employeerInfo.dateOfBirth),
+        imageUrl: employeerInfo.imageUrl,
+        isFree: employeerInfo.isFree,
+        companyId: parseInt(employeerInfo.companyId),
+        employeesProfessionId: parseInt(employeerInfo.employeesProfessionId),
+        employeesLevelId: parseInt(employeerInfo.employeesLevelId)
+      }
+    })
+    return updatedEmployeer
+  }
+
+  async deleteEmployeer(employeerId){
+    const deletedEmployeer = await prisma.employees.delete({where: {id: Number(employeerId.id)} })
+    return deletedEmployeer
   }
 }
 

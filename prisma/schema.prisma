@@ -63,6 +63,7 @@ model Employees {
   dateOfBirth DateTime?
   imageUrl    String?
   grade       Int?
+  isFree      Boolean?
 
   companyId Int
   company   Company @relation(fields: [companyId], references: [id])
@@ -86,7 +87,7 @@ model EmployeesPortfolio {
 }
 
 model EmployeesProfession {
-  id         Int         @id @unique
+  id         Int         @id @default(autoincrement())
   profession String
   employees  Employees[]
 }
