@@ -1,0 +1,94 @@
+.company{
+    &__info{
+        margin-bottom: 60px;
+        display: flex;
+        &-image{
+            margin-right: 25px;
+            img{
+                width: 245px;
+            }
+        }
+        &-text{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            &_desc{
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                h2{
+                    font-size: 32px;
+                    font-weight: 600;
+                }
+                p:first-child{
+                    font-size: 18px;
+                    font-weight: 400;
+                    display: flex;
+                    align-items: center;
+                    // margin-bottom: 10px;
+                    &::before{
+                        content: '';
+                        display: inline-block;
+                        margin-right: 10px;
+                        background-image: url('../img/star.svg');
+                        background-size: 25px 28px;
+                        height: 28px;
+                        width: 25px;
+                    }
+                }
+                p:nth-child(2){
+                    font-size: 18px;
+                }
+                p:last-child{
+                    font-size: 18px;
+                }
+            }
+            &_edits{
+                text-wrap: nowrap;
+                vertical-align: middle;
+                a{
+                    display: inline;
+                    padding: 13px 65px;
+                    border-radius: 22px;
+                    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.45);
+                    &:link{
+                        color: black;
+                    }
+                }
+            }
+        }
+    }
+    &__description{
+        background-color: $blue;
+        border-radius: 33px;
+        width: 100%;
+        padding: 30px;
+        margin-bottom: 60px;
+    }
+    &__portfolio{
+        margin-bottom: 150px;
+        h3{
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 35px;
+        }
+        &-items{
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: 1fr;
+            row-gap: 30px;
+            &__item{
+                max-width: 137px;
+                a img{
+                    border-radius: 24px;
+                    height: 137px;
+                    margin-bottom: 10px;
+                }
+                a p{
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

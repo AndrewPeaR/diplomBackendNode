@@ -6,9 +6,13 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const router = require('./routes/routes.js')
 const errorMiddleware = require('./middlewares/errorMiddleware.js')
+const path = requiure('path')
 
 const PORT = process.env.PORT || 3001
 const app = new express()
+
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
 
 app.use(express.json())
 app.use(cookieParser())

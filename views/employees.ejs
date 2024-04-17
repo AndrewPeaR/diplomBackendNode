@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchStaff</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <header>
+        <div class="header__wrapper">
+            <div class="header header__colored">
+                <img src="./img/imagemutted.svg" alt="imagemutted" class="header__item">
+                <nav class="header__item">
+                    <a href="#" class="logo">SearchStaff</a>
+                </nav>
+                <button class="header__signup header__item">вход</button>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <div class="wrapper">
+            <div class="findemployer">
+                <form action="POST">
+                    <input type="text" placeholder="найти сотрудника">
+                    <button type="submit">поиск</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="wrapper">
+            <div class="employees">
+                <h2>Найденные сотрудники</h2>
+                <div class="topEmployees__items">
+                    <div class="topEmployees__items-item">
+                        <img src="./img/personWithoutPhoto.svg" alt="personWithoutPhoto">
+                        <div class="topEmployees__items-item__text">
+                            <p class="topEmployees__items-item__text-fio">Иванов Иван Иванович</p>
+                            <p class="topEmployees__items-item__text-stars">5.0</p>
+                            <p class="topEmployees__items-item__text-profession">web-дизайнер</p>
+                            <p class="topEmployees__items-item__text-company"><a href="#">Крутая компания</a></p>
+                            <div class="topEmployees__items-item__text-contacts">
+                                <p>+7(999)123-56-78</p>
+                                <p>qwerty@mail.ru</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="topEmployees__items-item">
+                        <img src="./img/personWithoutPhoto.svg" alt="personWithoutPhoto">
+                        <div class="topEmployees__items-item__text">
+                            <p class="topEmployees__items-item__text-fio">Иванов Иван Иванович</p>
+                            <p class="topEmployees__items-item__text-stars">5.0</p>
+                            <p class="topEmployees__items-item__text-profession">web-дизайнер</p>
+                            <p class="topEmployees__items-item__text-company"><a href="#">Крутая компания</a></p>
+                            <div class="topEmployees__items-item__text-contacts">
+                                <p>+7(999)123-56-78</p>
+                                <p>qwerty@mail.ru</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Нужно реализовать модальные окна -->
+    <!-- <div class="modal__employer">
+        <div class="modal__employer_active">
+            <div class="modalClose">
+                <img src="./img/modalCross.svg" alt="modalCross"/>
+            </div>
+            <div class="modalWindow">
+
+            </div>
+        </div>
+    </div> -->
+</body>
+</html>

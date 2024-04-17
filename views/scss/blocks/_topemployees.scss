@@ -1,0 +1,99 @@
+.topEmployees{
+    h2{
+        font-size: 35px;
+        font-weight: 300;
+        color: #000000;
+        display: flex;
+        align-items: center;
+        margin-bottom: 60px;
+        &::after{
+            content: '';
+            display: inline-block;
+            margin-left: 20px;
+            background-image: url('../img/miniarrow.svg');
+            background-size: 40px 37px;
+            height: 37px;
+            width: 40px;
+        }
+    }
+
+    h3{
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 40px;
+    }
+
+    &__items{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        
+        &-item{
+            width: 100%;
+            background-color: $blue;
+            padding-left: 105px;
+            height: 324px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 65px;
+            &::after{
+                content: '';
+                position: absolute;
+                right: 70px;
+                display: inline-block;
+                margin-right: 10px;
+                background-image: url('../img/arrow.svg');
+                background-size: 44px 37px;
+                height: 37px;
+                width: 44px;
+            }
+            img{
+                margin-right: 60px;
+                height: 150px;
+            }
+            &__text{
+                &-fio{
+                   font-size: 24px;
+                   font-weight: 600; 
+                }
+                &-stars{
+                    font-size: 14px;
+                    font-weight: 400;
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    &::before{
+                        content: '';
+                        display: inline-block;
+                        margin-right: 10px;
+                        background-image: url('../img/star.svg');
+                        background-size: 25px 28px;
+                        height: 28px;
+                        width: 25px;
+                    }
+                }
+                &-profession{
+                    font-size: 18px;
+                    margin-bottom: 10px;
+                }
+                &-company{
+                    font-size: 18px;
+                    font-weight: 500;
+                    margin-bottom: 11px;
+                    a:link{
+                        color: black;
+                    }
+                }
+                &-contacts{
+                    display: flex;
+                    p{
+                        margin-right: 60px;
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+    }
+}
