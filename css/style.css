@@ -15,6 +15,7 @@
 /* Links */
 a, a:link, a:visited {
   text-decoration: none;
+  color: inherit;
 }
 
 a:hover {
@@ -311,7 +312,7 @@ body {
 .topEmployees__items-item__text-contacts {
   display: flex;
 }
-.topEmployees__items-item__text-contacts p {
+.topEmployees__items-item__text-contacts a {
   margin-right: 60px;
   font-size: 18px;
 }

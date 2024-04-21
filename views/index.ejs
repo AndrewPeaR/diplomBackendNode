@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SearchStaff</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
     <header>
@@ -12,7 +12,7 @@
             <div class="header">
                 <img src="./img/imagemutted.svg" alt="imagemutted" class="header__item">
                 <nav class="header__item">
-                    <a href="#" class="logo">SearchStaff</a>
+                    <a href="/" class="logo">SearchStaff</a>
                 </nav>
                 <button class="header__signup header__item">вход</button>
             </div>
@@ -26,9 +26,9 @@
                     <div class="main__text">
                         <h1>SearchStaff</h1>
                         <p>найди <span>своего</span> сотрудника</p>
-                        <form action="POST">
-                            <input type="text" placeholder="найти сотрудника">
-                            <button type="submit">поиск</button>
+                        <form action="/employees" method="POST">
+                            <input name="employeesProfession" type="text" placeholder="найти сотрудника">
+                            <button type="submit" value="submit">поиск</button>
                         </form>
                     </div>
                     <img src="./img/mainpic.png" alt="mainpic">
@@ -69,45 +69,22 @@
             <div class="topEmployees">
                 <h2>Топ сотрудников</h2>
                 <div class="topEmployees__items">
+                    <% for(let i = 0; i < 2; i++){ %>
                     <div class="topEmployees__items-item">
                         <img src="./img/personWithoutPhoto.svg" alt="personWithoutPhoto">
                         <div class="topEmployees__items-item__text">
-                            <p class="topEmployees__items-item__text-fio">Иванов Иван Иванович</p>
+                            <p class="topEmployees__items-item__text-fio"><a href="/employer/<%= employees[i].id %>"><%= employees[i].firstname %> <%= employees[i].lastname %></a></p>
                             <p class="topEmployees__items-item__text-stars">5.0</p>
-                            <p class="topEmployees__items-item__text-profession">web-дизайнер</p>
-                            <p class="topEmployees__items-item__text-company"><a href="#">Крутая компания</a></p>
+                            <p class="topEmployees__items-item__text-profession"><%= employees[i].employeesProfession.profession %></p>
+                            <p class="topEmployees__items-item__text-company"><a href="/company/<%=employees[i].companyId %>"><%= employees[i].company.name %></a></p>
                             <div class="topEmployees__items-item__text-contacts">
-                                <p>+7(999)123-56-78</p>
-                                <p>qwerty@mail.ru</p>
+                                <a href="tel:<%= employees[i].contacts %>"><%= employees[i].contacts %></a>
+                                <!-- Починить почту и добавить миграцию -->
+                                <a href="mailto:">qwerty@mail.ru</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="topEmployees__items-item">
-                        <img src="./img/personWithoutPhoto.svg" alt="personWithoutPhoto">
-                        <div class="topEmployees__items-item__text">
-                            <p class="topEmployees__items-item__text-fio">Иванов Иван Иванович</p>
-                            <p class="topEmployees__items-item__text-stars">5.0</p>
-                            <p class="topEmployees__items-item__text-profession">web-дизайнер</p>
-                            <p class="topEmployees__items-item__text-company"><a href="#">Крутая компания</a></p>
-                            <div class="topEmployees__items-item__text-contacts">
-                                <p>+7(999)123-56-78</p>
-                                <p>qwerty@mail.ru</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="topEmployees__items-item">
-                        <img src="./img/personWithoutPhoto.svg" alt="personWithoutPhoto">
-                        <div class="topEmployees__items-item__text">
-                            <p class="topEmployees__items-item__text-fio">Иванов Иван Иванович</p>
-                            <p class="topEmployees__items-item__text-stars">5.0</p>
-                            <p class="topEmployees__items-item__text-profession">web-дизайнер</p>
-                            <p class="topEmployees__items-item__text-company"><a href="#">Крутая компания</a></p>
-                            <div class="topEmployees__items-item__text-contacts">
-                                <p>+7(999)123-56-78</p>
-                                <p>qwerty@mail.ru</p>
-                            </div>
-                        </div>
-                    </div>
+                    </div>    
+                    <% } %>                
                 </div>
             </div>
         </div>
@@ -115,7 +92,7 @@
 
     <div class="pseudofooter">
         <div class="wrapper">
-            <a href="#" class="pseudofooter__link">
+            <a href="/employees" class="pseudofooter__link">
                 <p>показать больше</p>
                 <img src="./img/arrow.svg" alt="arrow">
             </a>
