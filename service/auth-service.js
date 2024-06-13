@@ -8,8 +8,8 @@ const CustomError = require("../exceptions/customError");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-class UserService {
-  async registration(email, password, firstname, lastname, imageUrl) {
+class AuthService {
+  async registration(email, password, firstname, lastname, userRoleId, fingerprint) {
     const candidate = await prisma.user.findUnique({
       where: {
         email: email,
@@ -20,8 +20,11 @@ class UserService {
         `Пользователь с таким адресом уже существует, ${email}`
       );
     }
-    const hashPassword = await bcrypt.hash(password, 3);
+    
+    const hashPassword = bcrypt.hashSync(password, 8);
+
     const activationLink = uuid.v4();
+
     const user = await prisma.user.create({
       data: {
         email: email,
@@ -29,7 +32,8 @@ class UserService {
         activationLink: activationLink,
         firstname: firstname,
         lastname: lastname,
-        imageUrl: imageUrl,
+        imageUrl: "while empty",
+        userRoleId: userRoleId
       },
     });
 
@@ -37,7 +41,7 @@ class UserService {
 
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    await tokenService.saveToken(userDto.id, tokens.refreshToken, fingerprint.hash);
 
     return {
       ...tokens,
@@ -60,7 +64,7 @@ class UserService {
     });
   }
 
-  async login(email, password) {
+  async login(email, password, fingerprint) {
     const user = await prisma.user.findUnique({ where: { email: email } });
     if (!user) {
       throw CustomError.BadRequest("Пользователь был не найден");
@@ -69,9 +73,11 @@ class UserService {
     if (!isPassEquals) {
       throw CustomError.BadRequest("Неправильный пароль");
     }
+
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    // await tokenService.removeToken()
+    await tokenService.saveToken(userDto.id, tokens.refreshToken, fingerprint.hash);
 
     return {
       ...tokens,
@@ -84,7 +90,7 @@ class UserService {
     return token;
   }
 
-  async refresh(refreshToken){
+  async refresh(refreshToken, fingerprint){
       if(!refreshToken){
           throw CustomError.UnauthorizedError()
       }
@@ -93,21 +99,21 @@ class UserService {
       if (!userData || !tokenFromDb){
           throw CustomError.UnauthorizedError()
       }
+      if(tokenFromDb.fingerprint !== fingerprint){
+        console.log("Попытка несанкционированного обновления токенов!")
+        throw CustomError.PermissonsError()
+      }
+      await tokenService.removeToken(refreshToken)
 
       const user = await prisma.user.findUnique({where: {id: userData.id} })
       const userDto = new UserDto(user)
       const tokens = tokenService.generateTokens({...userDto})
-      await tokenService.saveToken(userDto.id, tokens.refreshToken)
+      await tokenService.saveToken(userDto.id, tokens.refreshToken, fingerprint)
       return {
           ...tokens,
           user: userDto
       }
   }
-
-  // async getAllUsers(req, res, next){
-  //     const users = await UserModel.find()
-  //     return users
-  // }
 }
 
-module.exports = new UserService();
+module.exports = new AuthService();

@@ -3,74 +3,124 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 class EmployeesService {
-  async getOneCompanyEmployees(companyId) {
-    const employees = await prisma.employees.findMany({
+  async getOneEmployeer(employerId) {
+    const employer = await prisma.employees.findUnique({
       where: {
-        companyId: Number(companyId),
+        id: Number(employerId),
       },
       include: {
-        employeesLevel: {
-          select: {
-            level: true,
-          },
-        },
         employeesProfession: {
           select: {
             profession: true,
           },
         },
-        employeesPortfolio: {
+        employeesLevel: {
           select: {
-            title: true,
+            level: true,
+          },
+        },
+        company: {
+          select: {
+            name: true,
+          },
+        },
+        employeesPortfolio: true,
+      },
+    });
+    // console.log(employer)
+    return employer;
+  }
+
+  async addEmployeesToCompany(employeerInfo) {
+    const newEmployeer = await prisma.employees.create({
+      data: {
+        firstname: employeerInfo.firstname,
+        lastname: employeerInfo.lastname,
+        description: employeerInfo.description,
+        contacts: employeerInfo.contacts,
+        dateOfBirth: new Date(employeerInfo.dateOfBirth),
+        imageUrl: employeerInfo.imageUrl,
+        isFree: employeerInfo.isFree,
+        companyId: parseInt(employeerInfo.companyId),
+        employeesProfessionId: parseInt(employeerInfo.employeesProfessionId),
+        employeesLevelId: parseInt(employeerInfo.employeesLevelId),
+      },
+    });
+    return newEmployeer;
+  }
+
+  async updateEmployeer(employeerInfo) {
+    const updatedEmployeer = await prisma.employees.update({
+      where: {
+        id: Number(employeerInfo.id),
+      },
+      data: {
+        firstname: employeerInfo.firstname,
+        lastname: employeerInfo.lastname,
+        description: employeerInfo.description,
+        contacts: employeerInfo.contacts,
+        dateOfBirth: new Date(employeerInfo.dateOfBirth),
+        imageUrl: employeerInfo.imageUrl,
+        isFree: employeerInfo.isFree,
+        companyId: parseInt(employeerInfo.companyId),
+        employeesProfessionId: parseInt(employeerInfo.employeesProfessionId),
+        employeesLevelId: parseInt(employeerInfo.employeesLevelId),
+      },
+    });
+    return updatedEmployeer;
+  }
+
+  async deleteEmployeer(employeerId) {
+    const deletedEmployeer = await prisma.employees.delete({
+      where: { id: Number(employeerId.id) },
+    });
+    return deletedEmployeer;
+  }
+
+  async getAllEmployees() {
+    const employees = await prisma.employees.findMany({
+      include: {
+        employeesProfession: {
+          select: {
+            profession: true,
+          },
+        },
+        company: {
+          select: {
+            name: true,
           },
         },
       },
     });
-    return employees
+    // console.log(employees);
+    return employees;
   }
 
-  async addEmployeesToCompany(employeerInfo){
-    const newEmployeer = await prisma.employees.create({ 
-      data: {
-        firstname: employeerInfo.firstname,
-        lastname: employeerInfo.lastname,
-        description: employeerInfo.description,
-        contacts: employeerInfo.contacts,
-        dateOfBirth: new Date(employeerInfo.dateOfBirth),
-        imageUrl: employeerInfo.imageUrl,
-        isFree: employeerInfo.isFree,
-        companyId: parseInt(employeerInfo.companyId),
-        employeesProfessionId: parseInt(employeerInfo.employeesProfessionId),
-        employeesLevelId: parseInt(employeerInfo.employeesLevelId)
-      }
-    })
-    return newEmployeer
-  }
-
-  async updateEmployeer(employeerInfo){
-    const updatedEmployeer = await prisma.employees.update({
+  async getFilteredEmployees(employeesProfession){
+    const employees = await prisma.employees.findMany({
       where: {
-        id: Number(employeerInfo.id)
+          employeesProfession: {
+              profession: {
+                  contains: employeesProfession
+              }
+          }
       },
-      data: {
-        firstname: employeerInfo.firstname,
-        lastname: employeerInfo.lastname,
-        description: employeerInfo.description,
-        contacts: employeerInfo.contacts,
-        dateOfBirth: new Date(employeerInfo.dateOfBirth),
-        imageUrl: employeerInfo.imageUrl,
-        isFree: employeerInfo.isFree,
-        companyId: parseInt(employeerInfo.companyId),
-        employeesProfessionId: parseInt(employeerInfo.employeesProfessionId),
-        employeesLevelId: parseInt(employeerInfo.employeesLevelId)
+      include: {
+          employeesProfession: {
+              select: {
+                  profession: true
+              }
+          },
+          company: {
+              select: {
+                  name: true
+              }
+          }
       }
-    })
-    return updatedEmployeer
-  }
-
-  async deleteEmployeer(employeerId){
-    const deletedEmployeer = await prisma.employees.delete({where: {id: Number(employeerId.id)} })
-    return deletedEmployeer
+  })
+  // console.log(employees)
+  // res.render('employees.ejs', {employees: employees})
+  return employees
   }
 }
 

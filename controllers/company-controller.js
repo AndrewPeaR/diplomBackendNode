@@ -1,13 +1,14 @@
 const companyService = require('../service/company-service')
 // const { validationResult } = require('express-validator')
-const CustomError = require('../exceptions/customError')
+// const CustomError = require('../exceptions/customError')
 
 class CompanyController {
     async getOneCompany(req, res, next){
         try{
             const companyId = req.params.id
-            const companies = await companyService.getOneCompany(companyId)
-            res.json(companies)
+            const company = await companyService.getOneCompany(companyId)
+            res.json(company)
+            // res.render("company.ejs", {company: companies})
         } catch(e){
             next(e)
         }

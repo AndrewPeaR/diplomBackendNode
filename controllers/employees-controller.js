@@ -3,11 +3,35 @@ const employeesService = require('../service/employees-service')
 const CustomError = require('../exceptions/customError')
 
 class EmployeesController {
-    async getOneCompanyEmployees(req, res, next){
+    async getAllEmployees(req, res, next){
         try{
-            const companyId = req.params.id
-            const companies = await employeesService.getOneCompanyEmployees(companyId)
-            res.json(companies)
+            const employees = await employeesService.getAllEmployees()
+            res.json(employees);
+            // res.render("employees.ejs", {employees: employees});
+        }catch(e){
+            next(e)
+        }
+    }
+
+    async getFilteredEmployees(req, res, next){
+        try{
+            const employeesProfession = Object.keys(req.body)[0]
+            // console.log()
+            const filteredEmployees = await employeesService.getFilteredEmployees(employeesProfession)
+            res.json(filteredEmployees)
+            // res.render('employees.ejs', {employees: filteredEmployees})
+        }catch(e){
+            next(e)
+        }
+    }
+    
+    async getOneEmployeer(req, res, next){
+        try{
+            const employerId = req.params.id
+            const employer = await employeesService.getOneEmployeer(employerId)
+            
+            // res.render('person.ejs', {employer: employer})
+            res.json(employer)
         } catch(e){
             next(e)
         }

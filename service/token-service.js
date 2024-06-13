@@ -5,10 +5,10 @@ const prisma = new PrismaClient();
 class TokenService {
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: "1h",
+      expiresIn: process.env.JWT_ACCESS_EXPIRATION,
     });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-      expiresIn: "30d",
+      expiresIn: process.env.JWT_REFRESH_EXPIRATION,
     });
     return {
       accessToken,
@@ -34,40 +34,32 @@ class TokenService {
     }
   }
 
-  async saveToken(userId, refreshToken) {
-    const tokenData = await prisma.tokens.findUnique({
-      where: {
-        userId: userId,
-      },
-    });
-    if (tokenData) {
-      return await prisma.tokens.update({
-        where: {
-          refreshToken: tokenData.refreshToken,
-        },
-        data: {
-          refreshToken: refreshToken,
-        },
-      });
-    }
+  async saveToken(userId, refreshToken, fingerprint) {
     const token = await prisma.tokens.create({
       data: {
         userId: userId,
         refreshToken: refreshToken,
+        fingerprint: fingerprint
+      //   {
+      //     "email": "1234testjwt@fadsfdas.gfds",
+      //     "password": "12fdasdf"
+      // }
       },
     });
     return token;
   }
 
   async removeToken(refreshToken) {
-    const tokenData = await prisma.tokens.delete({
-      where: { refreshToken: refreshToken },
+    const tokenData = await prisma.tokens.deleteMany({
+      where: { 
+        refreshToken: refreshToken
+       },
     });
     return tokenData;
   }
 
   async findToken(refreshToken) {
-    const tokenData = await prisma.tokens.findUnique({
+    const tokenData = await prisma.tokens.findMany({
       where: {
         refreshToken: refreshToken,
       },

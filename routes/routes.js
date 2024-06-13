@@ -1,15 +1,11 @@
 const Router = require('express').Router
 const router = new Router()
-// const EmployeesService = require('../services/employees-service')
-const userRouter = require('./user')
 const companyRouter = require('./company')
-// const userController = require('../controllers/user-controller')
+const employeesRouter = require('./employees')
+const authRouter = require('./auth')
 
-router.use('/user', userRouter)
+router.use('/auth', authRouter)
 router.use('/company', companyRouter)
-
-
-// router.get('/', EmployeesService.getAllEmployees)
-// router.post('/', EmployeesService.createEmployees)
+router.use('/employees', employeesRouter)
 
 module.exports = router

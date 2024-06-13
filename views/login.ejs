@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchStaff</title>
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+    <header>
+        <div class="wrapper">
+            <div class="header">
+                <img src="./img/imagemutted.svg" alt="imagemutted" class="header__item">
+                <nav class="header__item">
+                    <a href="/" class="logo">SearchStaff</a>
+                </nav>
+                <a href="/login" class="header__signup header__item">вход</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="wrapper">
+            <h2>Login</h2>
+            <hr>
+            <form action="/user/login" method="POST">
+                <input name="email" type="text" placeholder="login">
+                <br>
+                <input name="password" type="text" placeholder="password">
+                <br>
+                <button type="submit" value="submit">Войти</button>
+            </form>
+        </div>
+    </main>
+
+    <% if(userData) { %>
+        <hr>
+        <h2>
+            Вы авторизованы!
+        </h2>
+    <% } %>
+
+</body>
+</html>

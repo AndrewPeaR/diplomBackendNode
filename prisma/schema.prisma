@@ -15,8 +15,9 @@ datasource db {
 
 model Tokens {
   id           Int    @id @default(autoincrement())
-  userId       Int    @unique
-  refreshToken String @unique
+  userId       Int    
+  refreshToken String 
+  fingerprint  String 
 }
 
 model User {
@@ -30,6 +31,14 @@ model User {
   imageUrl       String?
   dateOfBirth    DateTime?
   company        Company?
+  role           UserRole? @relation(fields: [userRoleId], references: [id])
+  userRoleId     Int?
+}
+
+model UserRole {
+  id   Int    @id @default(autoincrement())
+  role String
+  User User[]
 }
 
 model Company {
